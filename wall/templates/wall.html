@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wall</title>
+</head>
+
+<body>
+    <h1>Welcome {{request.session.user_username}}</h1><br>
+    <h2>Post a messages:</h2>
+    <form method="POST" action="/wall/message">
+        {% csrf_token %}
+        <textarea type="text" name="message"></textarea><br>
+        <input type="submit" name="post" value="Post a message">
+    </form>
+    {% for post in all_posts %}
+
+    <h2>Posted Messages:</h2>
+    <p>{{post.user.username}} posted a message</p>
+    <p>{{post.body}}</p>
+    <h2>Posted Comments:</h2>
+    {% for comment in post.comments.all %}
+
+    
+    <p>{{comment.user.username}} comment</p>
+    <p>{{comment.content}}</p>
+    {% endfor %}
+    <h2>Post a comment:</h2>
+    <form method="POST" action="/wall/comment/{{post.id}}">
+        {% csrf_token %}
+        <textarea type="text" name="comment"></textarea><br>
+        <input type="submit" name="post" value="post comment">
+    </form>
+    <p>---------------------------------------------------------------------------</p>
+    {% endfor %}
+    
+    <!-- <h2>Posted Comments:</h2>
+    <p>{{comment.content}}<a href='/comment/{{post.id}}'></p> -->
+    
+    
+
+
+</body>
+
+</html>
